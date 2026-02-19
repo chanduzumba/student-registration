@@ -59,10 +59,12 @@
               <th class="border border-gray-600 px-4 py-3 text-left">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <!-- parent div to display student data in table view -->
+          <tbody id="studentTableBody">
           </tbody>
         </table>
       </div>
+      <!-- parent div to display student data in grid view -->
       <div class="grid-view-container mt-8 grid grid-cols-1 sm:grid-cols-2 sm:visible visible md:hidden">
         
       </div>
@@ -117,8 +119,8 @@
       </div>
     </div>
   </div>
-
-  <script src="/src/main.js"></script>
+<!-- To use ES modules in the browser, you must explicitly tell the browser to treat your script as a module by adding the type="module" -->
+  <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>
