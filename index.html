@@ -4,15 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link css styles sheet-->
   <link href="/src/style.css" rel="stylesheet">
+  <!-- Font awesome icons link -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body class="bg-gray-900">
+  <!-- Header Section / Title of web page-->
   <header
     class="flex items-center justify-center pl-4 bg-linear-to-r from-blue-600 to-purple-700 h-20 text-white text-3xl font-bold shadow-lg">
     RegiTech – Next-Gen Student Registration
   </header>
+  <!-- Description on student registration platform-->
   <main class="p-8 bg-linear-to-br from-gray-900 to-gray-800 min-h-screen">
     <section class="mb-8 bg-gray-800 p-6 rounded-lg shadow-md">
       <h2 class="text-2xl font-semibold mb-4 text-gray-100">Welcome to RegiTech</h2>
@@ -26,7 +30,7 @@
         information. Administrators can efficiently handle enrollment, track student progress, and generate insightful
         reports.
     </section>
-
+<!-- Key Features section -->
     <section class="mb-8 bg-gray-800 p-6 rounded-lg shadow-md">
       <h2 class="text-2xl font-semibold mb-4 text-gray-100">Key Features</h2>
       <ul class="list-disc list-inside text-gray-300 space-y-2">
@@ -43,10 +47,12 @@
         To get started with RegiTech, simply click the button below to add a new student. Our system will guide you
         through the registration process, ensuring a smooth and efficient experience.
       </p>
+      <!-- Add Student button -->
       <button
         class="px-6 py-3 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition duration-200 shadow-lg font-semibold">
         Add New Student
       </button>
+      <!-- Main table container div-->
       <div class="table-container hidden md:visible md:flex justify-center mt-8 overflow-auto h-96 rounded-2xl shadow">
         <table class="table-auto mt-6 border-separate bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <caption class="caption-top text-lg font-semibold text-gray-100 mb-4">Registered Students</caption>
@@ -69,7 +75,7 @@
         
       </div>
 
-      <!-- When student data is empty-->
+      <!-- When student data is empty show no records found-->
       <div id="noStudentRecords" class="text-center text-gray-400 mt-8 hidden">
         <p class="text-lg">No student records found. Please add a new student.</p>
       </div>
@@ -77,50 +83,57 @@
     </section>
   </main>
   
-  <!-- Modal -->
+  <!-- Add or Update Student Modal/Pop up -->
   <div id="addStudentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
     <div
       class="relative top-20 mx-auto p-5 border w-full shadow-2xl rounded-xl bg-gray-800 transform transition-all duration-300">
       <div class="mt-3 text-center">
         <h3 class="text-xl font-bold text-gray-100 mb-4">Add New Student</h3>
         <div class="mt-2 px-7 py-3">
+          <!-- Student Form -->
           <form id="addStudentForm">
+            <!--Student ID field -->
             <div class="mb-4">
               <label for="studentId" class="block text-sm font-medium text-gray-300 mb-1">Student ID</label>
               <input type="number" id="studentId" name="studentId" placeholder="123"
                 class="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 required>
             </div>
+            <!--Student Name field -->
             <div class="mb-4">
               <label for="studentName" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
               <input type="text" id="studentName" name="studentName" placeholder="Name"
                 class="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 required>
             </div>
+            <!--Student Email field -->
             <div class="mb-4">
               <label for="studentEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
               <input type="email" id="studentEmail" name="studentEmail" placeholder="abc@gmail.com"
                 class="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 valid:border-green-500 transition duration-200"
                 required>
             </div>
+            <!--Student Contact field -->
             <div class="mb-6">
               <label for="studentContact" class="block text-sm font-medium text-gray-300 mb-1">Contact</label>
               <input type="tel" id="studentContact" name="studentContact"
                 class="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                maxlength="10" placeholder="1234567890" pattern="^\d{10,}$" required>
+                minlength="10" maxlength="15" placeholder="1234567890" pattern="[0-9]{10,15}" required>
             </div>
+            <!-- Submit button -->
             <div class="flex items-center px-4 py-3 space-x-3">
               <button type="submit"
                 class="flex-1 px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white text-base font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
                 Add
               </button>
+
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-
+<!-- Add Javascript file source location-->
   <script src="/src/main.js"></script>
 </body>
 
