@@ -69,9 +69,14 @@
         
       </div>
 
+      <!-- When student data is empty-->
+      <div id="noStudentRecords" class="text-center text-gray-400 mt-8 hidden">
+        <p class="text-lg">No student records found. Please add a new student.</p>
+      </div>
+
     </section>
   </main>
-
+  
   <!-- Modal -->
   <div id="addStudentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
     <div
@@ -102,16 +107,12 @@
               <label for="studentContact" class="block text-sm font-medium text-gray-300 mb-1">Contact</label>
               <input type="tel" id="studentContact" name="studentContact"
                 class="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                maxlength="10" placeholder="1234567890" pattern="[0-9]{10}" required>
+                maxlength="10" placeholder="1234567890" pattern="^\d{10,}$" required>
             </div>
             <div class="flex items-center px-4 py-3 space-x-3">
               <button type="submit"
                 class="flex-1 px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white text-base font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
                 Add
-              </button>
-              <button type="button" id="cancelBtn"
-                class="flex-1 px-4 py-2 bg-gray-600 text-gray-100 text-base font-medium rounded-lg shadow-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 transition duration-200">
-                Cancel
               </button>
             </div>
           </form>
@@ -119,8 +120,8 @@
       </div>
     </div>
   </div>
-<!-- To use ES modules in the browser, you must explicitly tell the browser to treat your script as a module by adding the type="module" -->
-  <script type="module" src="/src/main.js"></script>
+
+  <script src="/src/main.js"></script>
 </body>
 
 </html>

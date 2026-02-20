@@ -1,19 +1,59 @@
-import students from "./utils/studentJSON";
+// Get students data to local storage
+const students = JSON.parse(localStorage.getItem("Students")) || [
+  {
+    "studentId": 1001,
+    "studentName": "Aarav Sharma",
+    "studentEmail": "aarav.sharma@example.com",
+    "studentContact": "9876543210"
+  },
+  {
+    "studentId": 1002,
+    "studentName": "Diya Patel",
+    "studentEmail": "diya.patel@example.com",
+    "studentContact": "9123456780"
+  },
+  {
+    "studentId": 1003,
+    "studentName": "Rohan Verma",
+    "studentEmail": "rohan.verma@example.com",
+    "studentContact": "9988776655"
+  },
+  {
+    "studentId": 1004,
+    "studentName": "Ananya Singh",
+    "studentEmail": "ananya.singh@example.com",
+    "studentContact": "9090909090"
+  },
+  {
+    "studentId": 1005,
+    "studentName": "Karan Mehta",
+    "studentEmail": "karan.mehta@example.com",
+    "studentContact": "9812345678"
+  },
+  {
+    "studentId": 1006,
+    "studentName": "Ishita Rao",
+    "studentEmail": "ishita.rao@example.com",
+    "studentContact": "9345678123"
+  },
+  {
+    "studentId": 1007,
+    "studentName": "Vikram Desai",
+    "studentEmail": "vikram.desai@example.com",
+    "studentContact": "9871234560"
+  }
+];
 // Get elements
 const addStudentBtn = document.querySelector('button');
 const modal = document.getElementById('addStudentModal');
 const cancelBtn = document.getElementById('cancelBtn');
 const form = document.getElementById('addStudentForm');
 const tableBody = document.querySelector("#studentTableBody");
-const gridContainer = document.querySelector(".grid-view-container");
+const tableContainer = document.querySelector('.table-container');
+
 // Show modal on button click
 addStudentBtn.addEventListener('click', () => {
   modal.classList.remove('hidden');
-});
-
-// Hide modal on cancel
-cancelBtn.addEventListener('click', () => {
-  modal.classList.add('hidden');
 });
 
 // Hide modal on form submit (for now, just close)
@@ -27,7 +67,21 @@ form.addEventListener('submit', (e) => {
 });
 
 //set student data in local storage;
-const setStudentDetails = () => localStorage.setItem("Students", JSON.stringify(students));
+const setStudentDetails = () => {
+  localStorage.setItem("Students", JSON.stringify(students));
+  checkStudentRecords();
+}
+
+function checkStudentRecords() {
+  const studentData = JSON.parse(localStorage.getItem("Students")) || [];
+  if(studentData.length > 0) {
+    document.getElementById('noStudentRecords').classList.add('hidden');
+    tableContainer.classList.remove('md:hidden');
+  } else {
+    document.getElementById('noStudentRecords').classList.remove('hidden');
+    tableContainer.classList.add('md:hidden');
+  }
+}
 
 //display student details in table view
 function displayStudentDetails() {
@@ -46,6 +100,27 @@ function displayStudentDetails() {
         <button onclick="deleteStudentDetails(${student.studentId})" class="delete-btn ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
       </div>`
     tableBody.appendChild(row);
+  });
+}
+
+//display grid view for mobile and tablet or below 768px
+function displayGridView() {
+  const studentData = JSON.parse(localStorage.getItem("Students"));
+  studentData.forEach(student => {
+    const card = document.createElement("div");
+    card.classList.add("bg-gray-800", "rounded-lg", "shadow-md", "p-4", "mb-4", "text-gray-300");
+    card.setAttribute("data-student-id", student.studentId);
+    card.innerHTML = `
+      <div class="font-semibold">${student.studentName}</div>
+      <div>ID: ${student.studentId}</div>
+      <div>Email: ${student.studentEmail}</div>
+      <div>Contact: ${student.studentContact}</div>
+      <div class="mt-2 flex gap-2">
+        <button onclick="editStudentDetails(${student.studentId})" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
+        <button onclick="deleteStudentGridDetails(${student.studentId})" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    document.querySelector('.grid-view-container').appendChild(card);
   });
 }
 
@@ -98,6 +173,29 @@ function addStudentDetails() {
             </td>
           </tr>`;
     tableBody.appendChild(newRow);
+    showToast("Student details added successfully!");
+  } else {
+    showToast("Student ID already exists. Please enter a unique Student ID.");
+  }
+  checkStudentRecords();
+}
+
+// Edit student details
+function editStudentDetails(studentId) {
+  // Show modal for editing
+  modal.classList.remove('hidden');
+  const studentData = JSON.parse(localStorage.getItem("Students")) || [];
+  const studentToEdit = studentData.find(student => student.studentId === studentId);
+  if (studentToEdit) {
+    //Populate form with existing student details to edit
+    form.studentId.value = studentToEdit.studentId;
+    form.studentName.value = studentToEdit.studentName;
+    form.studentEmail.value = studentToEdit.studentEmail;
+    form.studentContact.value = studentToEdit.studentContact;
+
+    // Remove old details from table and grid view before updating with new details
+    deleteStudentDetails(studentId);
+    deleteStudentGridDetails(studentId);
   }
 }
 
@@ -110,9 +208,10 @@ function deleteStudentDetails(studentId) {
   const rowToDelete = Array.from(tableBody.children).find(row => row.firstElementChild.textContent == studentId);
   if (rowToDelete) {
     tableBody.removeChild(rowToDelete);
+    //Remove from grid view as well in case of resize
+    deleteStudentGridDetails(studentId);
   }
-  //Remove from grid view as well in case of resize
-  deleteStudentGridDetails(studentId);
+  checkStudentRecords();
 }
 
 //Delete student detail from grid view
@@ -124,30 +223,21 @@ function deleteStudentGridDetails(studentId) {
   const cardToDelete = document.querySelector(`.grid-view-container .bg-gray-800[data-student-id="${studentId}"]`);
   if (cardToDelete) {
     cardToDelete.remove();
+    //Remove from table view as well in case of resize
+    deleteStudentDetails(studentId);
+    showToast("Student details deleted successfully!");
   }
-  //Remove from table view as well in case of resize
-  deleteStudentDetails(studentId);
 }
 
-//display grid view for mobile and tablet or below 768px
-function displayGridView() {
-  const studentData = JSON.parse(localStorage.getItem("Students"));
-  studentData.forEach(student => {
-    const card = document.createElement("div");
-    card.classList.add("bg-gray-800", "rounded-lg", "shadow-md", "p-4", "mb-4", "text-gray-300");
-    card.setAttribute("data-student-id", student.studentId);
-    card.innerHTML = `
-      <div class="font-semibold">${student.studentName}</div>
-      <div>ID: ${student.studentId}</div>
-      <div>Email: ${student.studentEmail}</div>
-      <div>Contact: ${student.studentContact}</div>
-      <div class="mt-2 flex gap-2">
-        <button onclick="editStudentDetails(${student.studentId})" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
-        <button onclick="deleteStudentGridDetails(${student.studentId})" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
-      </div>
-    `;
-    document.querySelector('.grid-view-container').appendChild(card);
-  });
+//show toaster message for successful addition, updation and deletion of student details
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.className = "fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50";
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    document.body.removeChild(toast);
+  }, 3000);
 }
 
 setStudentDetails();
@@ -156,4 +246,4 @@ displayStudentDetails();
 displayGridView();
 
 // Add vertical scrollbar dynamically to the table container
-document.querySelector('.table-container').style.overflowY = 'scroll'; 
+tableContainer.style.overflowY = 'scroll'; 
