@@ -45,8 +45,11 @@ development.
 2.  Navigate to the project folder.
 
 3.  Make sure Node.js is installed. 
+
     -npm install
+
     -npm run dev
+    
     -click on http://localhost:5173/ to see the web page locally.
 
 ------------------------------------------------------------------------
@@ -66,8 +69,17 @@ All operations happen entirely in the browser.
 
 ## 📂 Project Structure
 
-student-registration/ │ ├── index.html ├── README.md ├── src/ │ ├──
-main.js │ └── style.css ├── screenshots/ └── .gitignore
+student-registration/
+│
+├── index.html
+├── README.md
+├── .gitignore
+│
+├── src/
+│   ├── main.js
+│   └── style.css
+│
+└── screenshots/
 
 ------------------------------------------------------------------------
 
