@@ -69,17 +69,8 @@ All operations happen entirely in the browser.
 
 ## 📂 Project Structure
 
-student-registration/
-│
-├── index.html
-├── README.md
-├── .gitignore
-│
-├── src/
-│   ├── main.js
-│   └── style.css
-│
-└── screenshots/
+![Folder Structue](screenshots/FolderStructure.JPG)
+
 
 ------------------------------------------------------------------------
 

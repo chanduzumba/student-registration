@@ -47,12 +47,19 @@ const students = JSON.parse(localStorage.getItem("Students")) || [
 const addStudentBtn = document.querySelector('button');
 const modal = document.getElementById('addStudentModal');
 const form = document.getElementById('addStudentForm');
+const cancelBtn = document.getElementById('cancelBtn');
 const tableBody = document.querySelector("#studentTableBody");
 const tableContainer = document.querySelector('.table-container');
 
 // Show modal on button click
 addStudentBtn.addEventListener('click', () => {
   modal.classList.remove('hidden');
+});
+
+//Cancel button to hide modal
+cancelBtn.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  form.reset(); // Reset form on cancel
 });
 
 // Hide modal on form submit 
@@ -73,12 +80,23 @@ const setStudentDetails = () => {
   checkStudentRecords();
 }
 
+// Set overflow for table container based on the number of student records in local storage
+function setOverflowForTableContainer() {
+  const studentData = JSON.parse(localStorage.getItem("Students")) || [];
+  if(studentData.length > 5) {
+    tableContainer.style.overflowY = 'scroll';
+  } else {
+    tableContainer.style.overflowY = 'hidden';
+  } 
+}
+
 // Check if there are student records in local storage and display appropriate message
 function checkStudentRecords() {
   const studentData = JSON.parse(localStorage.getItem("Students")) || [];
   if(studentData.length > 0) {
     document.getElementById('noStudentRecords').classList.add('hidden');
     tableContainer.classList.remove('md:hidden');
+    setOverflowForTableContainer();
   } else {
     document.getElementById('noStudentRecords').classList.remove('hidden');
     tableContainer.classList.add('md:hidden');
@@ -93,6 +111,7 @@ function displayStudentDetails() {
 // Delete button will remove the student record from local storage, table view and grid view
   studentData.forEach(student => {
     const row = document.createElement("tr");
+    row.classList.add("odd:bg-gray-800", "even:bg-gray-700", "hover:bg-gray-600", "transition-colors", "duration-200");
     row.innerHTML = `
       <td class="border border-gray-600 px-4 py-4 text-gray-300">${student.studentId}</td>
       <td class="border border-gray-600 px-4 py-4 text-gray-300">${student.studentName}</td>
@@ -172,6 +191,7 @@ function addStudentDetails() {
     document.querySelector('.grid-view-container').appendChild(card);
     //Table view - add new table row
     const newRow = document.createElement("tr");
+    newRow.classList.add("odd:bg-gray-800", "even:bg-gray-700", "hover:bg-gray-600", "transition-colors", "duration-200");
     newRow.innerHTML = `
             <td class="border border-gray-600 px-4 py-4 text-gray-300">${newStudent.studentId}</td>
             <td class="border border-gray-600 px-4 py-4 text-gray-300">${newStudent.studentName}</td>
@@ -299,6 +319,3 @@ setStudentDetails();
 //intial load - populate student details in table and grid layout
 displayStudentDetails();
 displayGridView();
-
-// Add vertical scrollbar dynamically to the table container
-tableContainer.style.overflowY = 'scroll'; 
