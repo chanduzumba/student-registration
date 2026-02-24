@@ -53,11 +53,14 @@ const tableContainer = document.querySelector('.table-container');
 
 // Show modal on button click
 addStudentBtn.addEventListener('click', () => {
+  // Update modal heading for adding new student details
+  updateModalHeadingForAddNewStudent();
   modal.classList.remove('hidden');
 });
 
 //Cancel button to hide modal
 cancelBtn.addEventListener('click', () => {
+  updateModalHeadingForAddNewStudent(); // Update modal heading adding new student details
   modal.classList.add('hidden');
   form.reset(); // Reset form on cancel
 });
@@ -80,6 +83,16 @@ const setStudentDetails = () => {
   checkStudentRecords();
 }
 
+//update modal heading to add new student details and reset form fields
+function updateModalHeadingForAddNewStudent() {
+  if(form.querySelector('button[type="submit"]').textContent === "Update") {
+    form.querySelector('button[type="submit"]').textContent = "Add Student"; // Change button text back to "Add Student" for adding new student
+    modal.querySelector('h3').textContent = "Add New Student";
+    form.studentId.disabled = false; // Enable student ID input for adding new student
+    form.studentId.classList.remove('opacity-40'); // Allow editing of student ID for new student
+  }
+}
+
 // Set overflow for table container based on the number of student records in local storage
 function setOverflowForTableContainer() {
   const studentData = JSON.parse(localStorage.getItem("Students")) || [];
@@ -96,10 +109,12 @@ function checkStudentRecords() {
   if(studentData.length > 0) {
     document.getElementById('noStudentRecords').classList.add('hidden');
     tableContainer.classList.remove('md:hidden');
+    document.querySelector('.grid-box').classList.remove('hidden');
     setOverflowForTableContainer();
   } else {
     document.getElementById('noStudentRecords').classList.remove('hidden');
     tableContainer.classList.add('md:hidden');
+    document.querySelector('.grid-box').classList.add('hidden');
   }
 }
 
@@ -134,7 +149,7 @@ function displayGridView() {
   // Delete button will remove the student record from local storage, table view and grid view
   studentData.forEach(student => {
     const card = document.createElement("div");
-    card.classList.add("bg-gray-800", "rounded-lg", "shadow-md", "p-4", "mb-4", "text-gray-300");
+    card.classList.add("bg-gray-700", "rounded-lg", "shadow-md", "p-4", "mb-4", "text-gray-300");
     card.setAttribute("data-student-id", student.studentId);
     card.innerHTML = `
       <div class="font-semibold">${student.studentName}</div>
@@ -152,11 +167,8 @@ function displayGridView() {
 
 // Add student details in both table and grid view
 function addStudentDetails() {
-  // Show modal for adding new student details
-  modal.querySelector('h3').textContent = "Add New Student";
-  modal.querySelector('button[type="submit"]').textContent = "Add Student";
-  form.studentId.disabled = false; // Enable student ID input for adding new student
-  form.studentId.classList.remove('opacity-40'); // Allow editing of student ID for new student
+  //update modal heading for adding new student details
+  updateModalHeadingForAddNewStudent();
   // Get form values
   const studentId = parseInt(document.getElementById('studentId').value);
   const studentName = document.getElementById('studentName').value;
@@ -177,7 +189,7 @@ function addStudentDetails() {
     localStorage.setItem("Students", JSON.stringify(studentData));
     // Grid view - add new card
     const card = document.createElement("div");
-    card.classList.add("bg-gray-800", "rounded-lg", "shadow-md", "p-4", "mb-4", "text-gray-300");
+    card.classList.add("bg-gray-700", "rounded-lg", "shadow-md", "p-4", "mb-4", "text-gray-300");
     card.setAttribute("data-student-id", newStudent.studentId);
     card.innerHTML = `
         <div class="font-semibold">${newStudent.studentName}</div>
@@ -236,7 +248,7 @@ function updateStudentDetails(studentId) {
     rowToUpdate.children[3].textContent = studentContact;
   }
   // Update grid view
-  const cardToUpdate = document.querySelector(`.grid-view-container .bg-gray-800[data-student-id="${studentId}"]`);
+  const cardToUpdate = document.querySelector(`.grid-view-container .bg-gray-700[data-student-id="${studentId}"]`);
   if (cardToUpdate) {
     cardToUpdate.innerHTML = `
         <div class="font-semibold">${studentName}</div>
@@ -295,7 +307,7 @@ function deleteStudentGridDetails(studentId) {
   const updatedData = studentData.filter(student => student.studentId !== studentId);
   localStorage.setItem("Students", JSON.stringify(updatedData));
   // Remove from grid view
-  const cardToDelete = document.querySelector(`.grid-view-container .bg-gray-800[data-student-id="${studentId}"]`);
+  const cardToDelete = document.querySelector(`.grid-view-container .bg-gray-700[data-student-id="${studentId}"]`);
   if (cardToDelete) {
     cardToDelete.remove();
     //Remove from table view as well in case of resize

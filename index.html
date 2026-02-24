@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Link css styles sheet-->
-  <link href="/src/style.css" rel="stylesheet">
+  <link href="./src/style.css" rel="stylesheet">
   <!-- Font awesome icons link -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -30,7 +30,7 @@
         information. Administrators can efficiently handle enrollment, track student progress, and generate insightful
         reports.
     </section>
-<!-- Key Features section -->
+    <!-- Key Features section -->
     <section class="mb-8 bg-gray-800 p-6 rounded-lg shadow-md">
       <h2 class="text-2xl font-semibold mb-4 text-gray-100">Key Features</h2>
       <ul class="list-disc list-inside text-gray-300 space-y-2">
@@ -53,9 +53,11 @@
         Add New Student
       </button>
       <!-- Main table container div-->
-      <div class="border border-solid border-l-0 bg-amber-50 table-container hidden md:visible md:flex justify-center mt-8 overflow-x-auto h-110 rounded-2xl shadow-2xl">
+      <div
+        class="border border-solid border-l-0 bg-amber-50 table-container hidden md:visible md:flex justify-center mt-8 overflow-x-auto h-110 rounded-2xl shadow-2xl">
         <table class="w-full mt-6 border-separate bg-gray-800 rounded-lg shadow-md overflow-x-auto">
-          <caption class="caption-top text-xl font-semibold text-gray-600 text-shadow-lg mb-4">Registered Students</caption>
+          <caption class="caption-top text-xl font-semibold text-gray-600 text-shadow-lg mb-4">Registered Students
+          </caption>
           <thead>
             <tr class="bg-linear-to-r from-gray-700 to-gray-600 text-white">
               <th class="border border-gray-600 px-4 py-3 text-center">Student ID</th>
@@ -70,10 +72,15 @@
           </tbody>
         </table>
       </div>
-      <!-- parent div to display student data in grid view -->
-      <div class="grid-view-container mt-8 grid grid-cols-1 sm:grid-cols-2 sm:visible visible md:hidden">
-        
+      <div class="grid-box border border-solid border-white p-4 mt-6 rounded-2xl  sm:visible visible md:hidden">
+        <!--grid view heading registered students-->
+        <div class="text-2xl text-white text-shadow-amber-100 font-bold mt-8 text-center">Registered Students</div>
+        <!-- parent div to display student data in grid view -->
+        <div class="grid-view-container mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        </div>
       </div>
+
 
       <!-- When student data is empty show no records found-->
       <div id="noStudentRecords" class="text-center text-gray-400 mt-8 hidden">
@@ -82,7 +89,7 @@
 
     </section>
   </main>
-  
+
   <!-- Add or Update Student Modal/Pop up -->
   <div id="addStudentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
     <div
@@ -120,14 +127,16 @@
                 class="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 minlength="10" maxlength="15" placeholder="1234567890" pattern="[0-9]{10,15}" required>
             </div>
-            <!-- Submit button -->
+
             <div class="flex items-center px-4 py-3 space-x-3">
+              <!-- Submit button -->
               <button type="submit"
                 class="flex-1 px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white text-base font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
-                Add
+                Add Student
               </button>
-              <button id="cancelBtn"
-                class="flex-1 px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white text-base font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200">
+              <!--Cancel button-->
+              <button type="button" id="cancelBtn"
+                class="flex-1 px-4 py-2 bg-gray-600 text-gray-100 text-base font-medium rounded-lg shadow-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 transition duration-200">
                 Cancel
               </button>
 
@@ -137,8 +146,8 @@
       </div>
     </div>
   </div>
-<!-- Add Javascript file source location-->
-  <script src="/src/main.js"></script>
+  <!-- Add Javascript file source location-->
+  <script src="./src/main.js"></script>
 </body>
 
 </html>
