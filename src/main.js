@@ -69,7 +69,7 @@ cancelBtn.addEventListener('click', () => {
 form.addEventListener('submit', (e) => {
   e.preventDefault(); // prevent form from submitting and refreshing the page
   // Check if it's an update or add operation based on the submit button text
-  if(form.querySelector('button[type="submit"]').textContent === "Update") {
+  if (form.querySelector('button[type="submit"]').textContent === "Update") {
     updateStudentDetails(parseInt(e.target.studentId.value));
   } else addStudentDetails(); // Add new student details
   modal.classList.add('hidden'); // Hide modal after submission
@@ -85,7 +85,7 @@ const setStudentDetails = () => {
 
 //update modal heading to add new student details and reset form fields
 function updateModalHeadingForAddNewStudent() {
-  if(form.querySelector('button[type="submit"]').textContent === "Update") {
+  if (form.querySelector('button[type="submit"]').textContent === "Update") {
     form.querySelector('button[type="submit"]').textContent = "Add Student"; // Change button text back to "Add Student" for adding new student
     modal.querySelector('h3').textContent = "Add New Student";
     form.studentId.disabled = false; // Enable student ID input for adding new student
@@ -96,17 +96,17 @@ function updateModalHeadingForAddNewStudent() {
 // Set overflow for table container based on the number of student records in local storage
 function setOverflowForTableContainer() {
   const studentData = JSON.parse(localStorage.getItem("Students")) || [];
-  if(studentData.length > 5) {
+  if (studentData.length > 5) {
     tableContainer.style.overflowY = 'scroll';
   } else {
     tableContainer.style.overflowY = 'hidden';
-  } 
+  }
 }
 
 // Check if there are student records in local storage and display appropriate message
 function checkStudentRecords() {
   const studentData = JSON.parse(localStorage.getItem("Students")) || [];
-  if(studentData.length > 0) {
+  if (studentData.length > 0) {
     document.getElementById('noStudentRecords').classList.add('hidden');
     tableContainer.classList.remove('md:hidden');
     document.querySelector('.grid-box').classList.remove('hidden');
@@ -121,9 +121,9 @@ function checkStudentRecords() {
 //display student details in table view
 function displayStudentDetails() {
   const studentData = JSON.parse(localStorage.getItem("Students"));
-// add table rows dynamically based on student data in local storage along with edit and delete buttons for each student record
-// Edit button will open the modal with existing student details populated for editing and updating the details in local storage, table view and grid view
-// Delete button will remove the student record from local storage, table view and grid view
+  // add table rows dynamically based on student data in local storage along with edit and delete buttons for each student record
+  // Edit button will open the modal with existing student details populated for editing and updating the details in local storage, table view and grid view
+  // Delete button will remove the student record from local storage, table view and grid view
   studentData.forEach(student => {
     const row = document.createElement("tr");
     row.classList.add("odd:bg-gray-800", "even:bg-gray-700", "hover:bg-gray-600", "transition-colors", "duration-200");
@@ -134,10 +134,15 @@ function displayStudentDetails() {
       <td class="border border-gray-600 px-4 py-4 text-gray-300">${student.studentContact}</td>
       <td class="border border-gray-600 px-4 py-4">
       <div class="flex gap-2">
-        <button onclick="editStudentDetails(${student.studentId})" class="edit-btn px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
-        <button onclick="deleteStudentDetails(${student.studentId})" class="delete-btn ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
+        <button class="edit-btn px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
+        <button class="delete-btn ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
       </div>`
     tableBody.appendChild(row);
+    // Add event listeners
+    const editBtn = row.querySelector('.edit-btn');
+    const deleteBtn = row.querySelector('.delete-btn');
+    editBtn.addEventListener('click', () => editStudentDetails(student.studentId));
+    deleteBtn.addEventListener('click', () => deleteStudentDetails(student.studentId));
   });
 }
 
@@ -157,10 +162,15 @@ function displayGridView() {
       <div>Email: ${student.studentEmail}</div>
       <div>Contact: ${student.studentContact}</div>
       <div class="mt-2 flex gap-2">
-        <button onclick="editStudentDetails(${student.studentId})" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
-        <button onclick="deleteStudentGridDetails(${student.studentId})" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
+        <button  class="editButton px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
+        <button class="deleteButton px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
       </div>
     `;
+    //Attach event listener
+    const editBtn = card.querySelector('.editButton');
+    const deleteBtn = card.querySelector('.deleteButton');
+    editBtn.addEventListener('click', () => editStudentDetails(student.studentId));
+    deleteBtn.addEventListener('click', () => deleteStudentGridDetails(student.studentId));
     document.querySelector('.grid-view-container').appendChild(card);
   });
 }
@@ -197,10 +207,15 @@ function addStudentDetails() {
         <div>Email: ${newStudent.studentEmail}</div>
         <div>Contact: ${newStudent.studentContact}</div>
         <div class="mt-2 flex gap-2">
-          <button onclick="editStudentDetails(${newStudent.studentId})" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
-          <button onclick="deleteStudentGridDetails(${newStudent.studentId})" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
+          <button  class="editStudent px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
+          <button class="deleteStudent px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
         </div>`;
     document.querySelector('.grid-view-container').appendChild(card);
+    // Add event listeners for new card
+    const editBtn = card.querySelector('.editStudent');
+    const deleteBtn = card.querySelector('.deleteStudent');
+    editBtn.addEventListener('click', () => editStudentDetails(newStudent.studentId));
+    deleteBtn.addEventListener('click', () => deleteStudentGridDetails(newStudent.studentId));
     //Table view - add new table row
     const newRow = document.createElement("tr");
     newRow.classList.add("odd:bg-gray-800", "even:bg-gray-700", "hover:bg-gray-600", "transition-colors", "duration-200");
@@ -211,12 +226,17 @@ function addStudentDetails() {
             <td class="border border-gray-600 px-4 py-4 text-gray-300">${newStudent.studentContact}</td>
             <td class="border border-gray-600 px-4 py-4">
               <div class="flex gap-2">
-                <button onclick="editStudentDetails(${newStudent.studentId})" class="edit-btn px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
-                <button onclick="deleteStudentDetails(${newStudent.studentId})" class="delete-btn ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
+                <button class="edit-btn px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
               </div>
             </td>
           </tr>`;
     tableBody.appendChild(newRow);
+    // Add event listeners for new row
+    const editBtn1 = newRow.querySelector('.edit-btn');
+    const deleteBtn1 = newRow.querySelector('.delete-btn');
+    editBtn1.addEventListener('click', () => editStudentDetails(newStudent.studentId));
+    deleteBtn1.addEventListener('click', () => deleteStudentDetails(newStudent.studentId));
     // Show success message after adding student details
     showToast("Student details added successfully!");
   } else {
@@ -234,7 +254,7 @@ function updateStudentDetails(studentId) {
   const studentData = JSON.parse(localStorage.getItem("Students")) || [];
   // Find the index of the student to update in local storage and update the details
   const studentIndexToEdit = studentData.findIndex(student => student.studentId === studentId);
-  if(studentIndexToEdit !== -1) {
+  if (studentIndexToEdit !== -1) {
     studentData[studentIndexToEdit].studentName = studentName;
     studentData[studentIndexToEdit].studentEmail = studentEmail;
     studentData[studentIndexToEdit].studentContact = studentContact;
@@ -256,13 +276,18 @@ function updateStudentDetails(studentId) {
         <div>Email: ${studentEmail}</div>
         <div>Contact: ${studentContact}</div>
         <div class="mt-2 flex gap-2">
-          <button onclick="editStudentDetails(${studentId})" class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
-          <button onclick="deleteStudentGridDetails(${studentId})" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
+          <button class="editButton px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 text-sm font-medium"><i class="fas fa-edit"></i></button>
+          <button class="deleteButton px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 text-sm font-medium"><i class="fas fa-trash"></i></button>
         </div>`;
+    // Add event listeners after updating innerHTML
+    const editBtn = cardToUpdate.querySelector('.editButton');
+    const deleteBtn = cardToUpdate.querySelector('.deleteButton');
+    editBtn.addEventListener('click', () => editStudentDetails(studentId));
+    deleteBtn.addEventListener('click', () => deleteStudentGridDetails(studentId));
   }
   // Show success message after updating student details
   showToast("Student details updated successfully!");
-} 
+}
 
 // Edit student details
 function editStudentDetails(studentId) {
